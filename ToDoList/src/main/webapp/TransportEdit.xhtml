@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+    
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Transport Application</title>
+</h:head>
+<h:body>
+<h2>Vehicles information details</h2>
+
+<h:form id="vehicleForm">
+<p:outputLabel value="Vehicle Name" /><br/>
+<p:inputText value="#{vehiclePrime.newTransport.vehicleType}"  />
+<br/>
+<p:outputLabel value="Vehicle Number" /><br/>
+<p:inputText value="#{vehiclePrime.newTransport.vehicleNumber}"/>
+<br/>
+<p:outputLabel value="Driver Name" /><br/>
+<p:inputText value="#{vehiclePrime.newTransport.driverName}"  />
+<br/>
+<p:outputLabel value="Vehicle Mode" /><br/>
+<p:inputText value="#{vehiclePrime.newTransport.vehicleMode}"/><br/>
+<br/>
+<p:commandButton value="Save Details" action="#{vehiclePrime.addNew}" update="form vehicleForm"/><br/>
+</h:form>
+<br/>
+
+<h:form id="form" binding="#{vehiclePrime.tableForm}">
+    <p:growl id="msgs" showDetail="true"/>
+
+    <div class="card">
+        <p:dataTable id="vehicleData" var="data" value="#{vehiclePrime.transportDataModel}" editable="true" update="vehicleData"
+                     style="margin-bottom:20px"
+                      paginator="true" rows="10" 
+                     paginatorTemplate=
+                             " {CurrentPageReport} {RowsPerPageDropdown} {FirstPageLink}
+                             {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                     rowsPerPageTemplate="5,10,15" lazy="true">
+                     
+            <p:ajax event="rowEdit" listener="#{vehiclePrime.updateTransport}" update=":form:msgs"/>
+            <p:ajax event="rowEditCancel" listener="#{vehiclePrime.onRowCancel}" update=":form:msgs"/>
+            
+            <p:column headerText="Serial No:" sortBy="#{data.id}" filterBy="#{data.id}" filterMatchMode="contains">
+<h:outputText value="#{data.id}" />
+</p:column>
+            
+             <p:column headerText="Vehicle Name" sortBy="#{data.vehicleType}" filterBy="#{data.vehicleType}" filterMatchMode="contains">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{data.vehicleType}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText id="modelInput" value="#{data.vehicleType}" style="width:100%"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+             <p:column headerText="Vehicle Number" sortBy="#{data.vehicleNumber}" filterBy="#{data.vehicleNumber}" filterMatchMode="contains">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{data.vehicleNumber}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{data.vehicleNumber}" style="width:100%"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+             <p:column headerText="Driver Name" sortBy="#{driverName}" filterBy="#{data.driverName}" filterMatchMode="contains">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{data.driverName}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{data.driverName}" style="width:100%"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column headerText="Vehicle Mode" sortBy="#{vehicleMode}" filterBy="#{data.vehicleMode}" filterMatchMode="contains">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{data.vehicleMode}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{data.vehicleMode}" style="width:100%"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column headerText="Actions">
+	<p:commandButton value="Delete" action="#{vehiclePrime.deleteDetails}" update="vehicleData" process="@this">
+	<f:setPropertyActionListener target="#{vehiclePrime.transport}" value="#{data}" />
+	</p:commandButton>
+	</p:column>
+            
+            <p:column style="width:6rem">
+                <p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
+            </p:column>
+        </p:dataTable>
+    </div>
+    </h:form>
+    </h:body>
+    </html>

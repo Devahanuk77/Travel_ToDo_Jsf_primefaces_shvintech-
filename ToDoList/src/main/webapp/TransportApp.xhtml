@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Transport Application</title>
+</head>
+<body>
+    <h3>Vehicle Information Details</h3>
+    <h:form>
+        <h:outputText value="Vehicle Name" /> 
+        <h:inputText value="#{vehicle.newTransport.vehicleType}"/>
+        <br/>
+        <h:outputText value="Vehicle Number" />
+        <h:inputText value="#{vehicle.newTransport.vehicleNumber}"/>
+        <br/>
+        <h:outputText value="Driver Name" />
+        <h:inputText value="#{vehicle.newTransport.driverName}"/>
+        <br/>
+        
+         <h:outputText value="Vehicle Mode" />
+        <h:inputText value="#{vehicle.newTransport.vehicleMode}"/>
+        <br/>
+        
+        <h:commandButton value="Save Details" action="#{vehicle.addNew}"/>
+        <h:commandButton value="Go to Home page" action="Todo"/>
+    </h:form>
+	<br/>
+    <h:form>
+        <h:dataTable  id="vehicleData" value="#{vehicle.transports}" var="sch" editable="true">
+            <h:column>
+                <f:facet name="header" >ID</f:facet>
+                <h:outputText value="#{sch.id}"> </h:outputText>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">VehicleName</f:facet>
+                <h:inputText value="#{sch.vehicleType}" rendered="#{sch.edit}" />
+                <h:outputText value="#{sch.vehicleType}" rendered="#{not sch.edit}" />
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">VehicleNumber</f:facet>
+                <h:inputText value="#{sch.vehicleNumber}" rendered="#{sch.edit}" />
+                <h:outputText value="#{sch.vehicleNumber}" rendered="#{not sch.edit}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">DriverName</f:facet>
+                <h:inputText value="#{sch.driverName}" rendered="#{sch.edit}" />
+                <h:outputText value="#{sch.driverName}" rendered="#{not sch.edit}"/>
+            </h:column>
+            
+             <h:column>
+                <f:facet name="header">VehicleMode</f:facet>
+                <h:inputText value="#{sch.vehicleMode}" rendered="#{sch.edit}" />
+                <h:outputText value="#{sch.vehicleMode}" rendered="#{not sch.edit}"/>
+            </h:column>
+            
+            <h:column>
+                <h:commandLink value="  Edit " action="#{vehicle.edit}">
+                    <f:setPropertyActionListener target="#{vehicle.transport}" value="#{sch}" />
+                </h:commandLink>
+                </h:column>
+                
+                <h:column>
+                 <f:facet name="header">Actions</f:facet>
+                <h:commandLink value="  Update " action="#{vehicle.updateDetails}">
+                    <f:setPropertyActionListener target="#{vehicle.newTransport}" value="#{sch}" />
+                </h:commandLink>
+            </h:column>
+            
+            <h:column>
+                <h:commandLink value="Delete" action="#{vehicle.deleteDetails}">
+                    <f:setPropertyActionListener target="#{vehicle.transport}" value="#{sch}" />
+                </h:commandLink>    
+            </h:column>
+            
+        </h:dataTable>
+    </h:form>
+</body>
+</html>

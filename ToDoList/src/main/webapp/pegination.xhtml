@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Transport Application</title>
+</h:head>
+<h:body>
+<h3>Double Click for Employee Editing</h3>
+
+ 
+
+    <h:form id="vehicleForm">
+
+<p:panelGrid columns="3" cellPadding="5">
+
+ 
+
+        <p:outputLabel value="Vehicle Name" />
+<p:inputText value="#{vehiclePrime.newTransport.vehicleType}" required="true" />
+<br />
+<p:outputLabel value="Vehicle Number" />
+<p:inputText value="#{vehiclePrime.newTransport.vehicleNumber}" required="true" />
+<br />
+<p:outputLabel value="Driver Name" />
+<p:inputText value="#{vehiclePrime.newTransport.driverName}" required="true" />
+<br />
+<p:outputLabel value="Vehicle Mode" />
+<p:inputText value="#{vehiclePrime.newTransport.vehicleMode}" required="true" />
+<br />
+</p:panelGrid>
+<p:commandButton value="Add" action="#{vehiclePrime.addNew}" update="udata empform">
+        </p:commandButton>
+<br/>
+<br/>
+<br/>
+</h:form>
+
+    <h:form id="udata">
+
+ 
+
+<p:growl id="msg" showDetail="true" />
+
+ 
+
+        <p:dataTable id="DataTab" value="#{emprime.employees}" var="data" editable="true" editMode="cell"
+                     widgetVar="cellEmployee" editInitEvent="dblclick" paginator="true" rows="5" lazy="true">
+
+ 
+
+<p:ajax event="cellEdit" listener="#{data.onCellEdit}" update=":udata:msg" />  
+
+ 
+
+            <p:column headerText="ID">
+<h:outputText value="#{data.id}" />
+</p:column>
+
+ 
+
+            <p:column headerText="Vehicle Name">
+<p:cellEditor>
+<f:facet name="output">
+<h:outputText value="#{data.vehicleType}" />
+</f:facet>
+<f:facet name="input">
+<p:inputText value="#{data.vehicleType}" />
+</f:facet>
+</p:cellEditor>
+</p:column>
+
+ 
+
+            <p:column headerText="Vehicle Number">
+<p:cellEditor>
+<f:facet name="output">
+<h:outputText value="#{data.vehicleNumber}" />
+</f:facet>
+<f:facet name="input">
+<p:inputText value="#{data.vehicleNumber}" />
+</f:facet>
+</p:cellEditor>
+</p:column>
+
+ 
+
+            <p:column headerText="Driver Name">
+<p:cellEditor>
+<f:facet name="output">
+<h:outputText value="#{data.driverName}" />
+</f:facet>
+<f:facet name="input">
+<p:inputText value="#{data.driverName}" />
+</f:facet>
+</p:cellEditor> 
+</p:column>    
+
+           <p:column headerText="Vehicle Mode">
+<p:cellEditor>
+<f:facet name="output">
+<h:outputText value="#{data.vehicleMode}" />
+</f:facet>
+<f:facet name="input">
+<p:inputText value="#{data.vehicleMode}" />
+</f:facet>
+</p:cellEditor> 
+</p:column> 
+
+<p:column headerText="DELETE">
+<p:commandButton value="Delete" action="#{vehiclePrime.deleteDetails}" update="udata" process="@this">
+<f:setPropertyActionListener target="#{vehiclePrime.transport}" value="#{data}" />
+</p:commandButton>
+</p:column>
+
+<p:contextMenu for="employees2" widgetVar="cMenu">
+<p:menuitem value="Edit Cell" icon="pi pi-search"
+                    onclick="PF('cellEmployees').showCellEditor();return false;"/>
+
+</p:contextMenu>
+
+        </p:dataTable>
+    </h:form>
+</h:body>
+</html>
+
+ 
